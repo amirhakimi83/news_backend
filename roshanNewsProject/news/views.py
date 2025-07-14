@@ -4,14 +4,21 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .serializer import NewsSerializer
 from rest_framework import status
-from .models import News
+from .models import News, Tag
 from django.db.models import Q
-
 
 # Create your views here.
 @api_view(["POST"])
 def insert_news(request):
     serializer = NewsSerializer(data=request.data)
+    print(request.data)
+    tags = request.data['tags']
+    for tag in tags:
+        if not Tag.objects.filter(name=tag):
+            new_tag = Tag.objects.create(name=tag)
+            new_tag.save()
+    if News.objects.filter(title=request.data['title']):
+        return Response({"error": "خبر تکراری است!"}, status=status.HTTP_400_BAD_REQUEST)
     if serializer.is_valid():
         serializer.save()
         return Response(serializer.data, status=status.HTTP_200_OK)
@@ -41,6 +48,9 @@ def delete_news(request):
         news = News.objects.all()
         for n in news:
             n.delete()
+        tags = Tag.objects.all()
+        for t in tags:
+            t.delete()
         return Response({"message": "خبر با موفقیت حذف شد."}, status=status.HTTP_204_NO_CONTENT)
     except News.DoesNotExist:
         return Response({"error": "خبر پیدا نشد!"}, status=status.HTTP_404_NOT_FOUND)
