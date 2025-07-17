@@ -1,4 +1,4 @@
-import scrapy
+import scrapy, os
 from twisted.spread.jelly import reference_atom
 import requests
 
@@ -8,7 +8,7 @@ class ZoomitSpider(scrapy.Spider):
 
     custom_settings = {
         "PLAYWRIGHT_BROWSER_TYPE": "chromium",
-        "PLAYWRIGHT_DEFAULT_NAVIGATION_TIMEOUT": 60000,
+        "PLAYWRIGHT_DEFAULT_NAVIGATION_TIMEOUT": 120000,
     }
 
     def start_requests(self):
@@ -51,7 +51,10 @@ class ZoomitSpider(scrapy.Spider):
             "tags": tags,
             "reference": reference
         }
-        save_news_url = 'http://127.0.0.1:8000/api/news/insert/'
+        if os.environ.get("DOCKER_ENV") == "true":
+            save_news_url = 'http://web:8000/api/news/insert/'
+        else:
+            save_news_url = 'http://127.0.0.1:8000/api/news/insert/'
         insert_response = requests.post(save_news_url, json=data)
         print(f"\n\n\n\n\n\n\n\n{insert_response.status_code}\n{insert_response.text}\n\n\n\n\n\n\n\n")
 

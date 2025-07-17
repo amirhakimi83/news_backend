@@ -18,9 +18,12 @@ def insert_news(request):
             new_tag = Tag.objects.create(name=tag)
             new_tag.save()
     if News.objects.filter(title=request.data['title']):
+        print("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nduplicated news\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n")
         return Response({"error": "خبر تکراری است!"}, status=status.HTTP_400_BAD_REQUEST)
     if serializer.is_valid():
         serializer.save()
+        print(
+            "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nnews saved\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n")
         return Response(serializer.data, status=status.HTTP_200_OK)
     return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
 
@@ -29,7 +32,6 @@ def insert_news(request):
 def all_news(request):
     news = News.objects.all()
     tags = request.query_params.getlist('tags')
-    print(tags)
     if tags:
         news = news.filter(tags__name__in=tags).distinct()
     keyword = request.query_params.get('keyword')
