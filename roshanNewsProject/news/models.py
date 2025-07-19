@@ -12,7 +12,7 @@ class News(models.Model):
     title = models.CharField(max_length=200)
     content_news = models.TextField()
     tags = models.ManyToManyField(Tag)
-    reference = models.CharField(max_length=200)
+    reference = models.CharField(max_length=200, null=True)
 
 
     def __str__(self):

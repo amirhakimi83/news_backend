@@ -138,8 +138,8 @@ CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = 'Asia/Tehran'
 CELERY_BEAT_SCHEDULE = {
-    'crawling in every 2 minutes':{
+    'crawling in every 30  seconds':{
         'task': 'news.tasks.crawling',
-        'schedule': 140.0
+        'schedule': 30.0
     }
 }
