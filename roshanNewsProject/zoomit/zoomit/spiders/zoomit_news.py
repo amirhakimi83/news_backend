@@ -4,7 +4,10 @@ import requests
 
 class ZoomitSpider(scrapy.Spider):
     name = "zoomit"
-    start_urls = ["https://www.zoomit.ir/archive"]
+    start_urls = []
+    for i in range(5):
+        start_urls.append(f"https://www.zoomit.ir/archive/?sort=Newest&publishDate=All&readingTime=All&pageNumber={i}")
+    # start_urls = ["https://www.zoomit.ir/archive"]
 
     custom_settings = {
         "PLAYWRIGHT_BROWSER_TYPE": "chromium",
@@ -56,6 +59,5 @@ class ZoomitSpider(scrapy.Spider):
         else:
             save_news_url = 'http://127.0.0.1:8000/api/news/insert/'
         insert_response = requests.post(save_news_url, json=data)
-        print(f"\n\n\n\n\n\n\n\n{insert_response.status_code}\n{insert_response.text}\n\n\n\n\n\n\n\n")
-
+        print(f"{insert_response.status_code}\n{insert_response.text}")
         yield {"news_data": data}
