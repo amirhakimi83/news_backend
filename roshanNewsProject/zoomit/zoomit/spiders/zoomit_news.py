@@ -4,10 +4,10 @@ import requests
 
 class ZoomitSpider(scrapy.Spider):
     name = "zoomit"
-    start_urls = []
-    for i in range(5):
-        start_urls.append(f"https://www.zoomit.ir/archive/?sort=Newest&publishDate=All&readingTime=All&pageNumber={i}")
-    # start_urls = ["https://www.zoomit.ir/archive"]
+    # start_urls = []
+    # for i in range(5):
+    #     start_urls.append(f"https://www.zoomit.ir/archive/?sort=Newest&publishDate=All&readingTime=All&pageNumber={i}")
+    start_urls = ["https://www.zoomit.ir/archive"]
 
     custom_settings = {
         "PLAYWRIGHT_BROWSER_TYPE": "chromium",
